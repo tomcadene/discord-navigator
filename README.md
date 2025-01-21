@@ -1,0 +1,2 @@
+# discord-navigator
+Discord Navigator
