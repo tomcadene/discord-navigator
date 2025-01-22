@@ -30,6 +30,12 @@ input[type="color"] {
   border-radius: 4px;
 }
 
+input[type="color"] {
+  height: 40px; /* Increased height for better visibility */
+  width: 100%; /* Make it span the container width */
+  cursor: pointer;
+}
+
 .color-picker-container {
   display: flex;
   align-items: center;
@@ -39,6 +45,19 @@ input[type="color"] {
 .color-picker-container label {
   margin-right: 10px;
   font-size: 14px;
+}
+
+.auto-scroll-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.auto-scroll-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  cursor: pointer;
 }
 
 .result-count {
