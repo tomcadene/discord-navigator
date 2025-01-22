@@ -2,30 +2,26 @@
 function clearHighlights() {
   const highlighted = document.querySelectorAll('.discord-search-highlight');
   highlighted.forEach(elem => {
-    // Option 1: If using border
-    // elem.style.border = '';
-
-    // Option 2: If using box-shadow
+    // Remove the box-shadow or border
     elem.style.boxShadow = '';
-
+    elem.style.border = '';
+    elem.style.borderRadius = '';
+    
     // Remove the highlight class
     elem.classList.remove('discord-search-highlight');
-
-    // If you implemented text highlighting (optional), you'd need to handle removing the <span> elements here
-    // Example:
-    // const parent = elem.parentNode;
-    // parent.replaceChild(document.createTextNode(elem.textContent), elem);
   });
 }
 
-// Function to perform the search and highlight matches
-function performSearch(query) {
+// Function to perform the search, highlight matches, and scroll to the first match
+function performSearch(query, color) {
   clearHighlights(); // Clear previous highlights
 
   const serversDiv = document.querySelector('div[aria-label="Servers"]');
-  if (!serversDiv) return;
+  if (!serversDiv) return { count: 0 };
 
   const groupChats = serversDiv.querySelectorAll('div.listItem_c96c45');
+  let matchCount = 0;
+  let firstMatch = null;
 
   groupChats.forEach(chat => {
     const innerDiv = chat.querySelector('div > div[data-dnd-name]');
@@ -33,25 +29,42 @@ function performSearch(query) {
       const chatName = innerDiv.getAttribute('data-dnd-name').toLowerCase();
       const searchTerm = query.toLowerCase();
       if (chatName.includes(searchTerm)) {
-        // Highlight by adding a green border or box-shadow around the inner div
-        // Option 1: Using border
-        // innerDiv.style.border = '2px solid green';
-
-        // Option 2: Using box-shadow
-        innerDiv.style.boxShadow = '0 0 0 2px green';
-
-        // Add a CSS class for easy removal
+        // Apply highlight
+        innerDiv.style.boxShadow = `0 0 0 2px ${color}`;
+        innerDiv.style.borderRadius = '0.25rem';
         innerDiv.classList.add('discord-search-highlight');
+
+        matchCount += 1;
+
+        // Track the first matching server
+        if (!firstMatch) {
+          firstMatch = innerDiv;
+        }
       }
     }
   });
+
+  // Scroll to the first matching server if any
+  if (firstMatch) {
+    // Scroll the parent container to bring the first match into view
+    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  return { count: matchCount };
 }
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SEARCH') {
-    performSearch(message.query);
+    const result = performSearch(message.query, message.color);
+    // Send back the count
+    sendResponse(result);
   } else if (message.type === 'CLEAR') {
     clearHighlights();
+    // Optionally, send back confirmation
+    sendResponse({ cleared: true });
   }
+
+  // Indicate that we will respond asynchronously if needed
+  // Not necessary here since sendResponse is called synchronously
 });
