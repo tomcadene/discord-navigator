@@ -6,6 +6,7 @@ Chrome extension designed specifically for Discord enthusiasts who belong to mul
 **Visual Highlights:** Matching servers are highlighted with a green border, making them stand out for easy identification.  
 **Multiple Matches:** Supports highlighting multiple servers that contain the search term, even if the term is part of a longer server name.  
 **User-Friendly Interface:** Simple popup with a search and clear button for seamless interaction.
+**Open-Source**: The code is right here in the repository. Contribute by opening an issue or submit a pull request.
 
 ![discord_navigator_2](https://github.com/user-attachments/assets/841d2dfd-6ef7-47f2-935f-8287acc0e6bf)
 Notice the green shadow around the valorant server logo
@@ -14,6 +15,7 @@ Notice the green shadow around the valorant server logo
 This extension is ideal for active Discord users who are members of numerous servers and need a streamlined way to navigate between them. Whether you're a community manager, gamer, or part of multiple interest groups, Discord Navigator enhances your Discord experience by saving time and reducing the hassle of manual browsing.
 
 ## Installation
+Clone the repository, extract the folder, load the extension in Chrome
 
 ## Usage
 **Use the Search Bar:** Click on the extension icon in the Chrome toolbar to open the popup. Enter the name of the server you wish to find and click "Search.".  
