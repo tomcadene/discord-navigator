@@ -1,18 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "Discord Navigator",
+  "name": "Discord navigator",
   "version": "1.0",
-  "description": "Search and highlight your Discord group chats.",
+  "description": "Search and highlight Discord servers.",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "icons/discord_navigator_16.png",
-      "48": "icons/discord_navigator_48.png",
-      "128": "icons/discord_navigator_128.png"
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
   },
   "content_scripts": [
@@ -22,8 +23,8 @@
     }
   ],
   "icons": {
-    "16": "icons/discord_navigator_16.png",
-    "48": "icons/discord_navigator_48.png",
-    "128": "icons/discord_navigator_128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }
