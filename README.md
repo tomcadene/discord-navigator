@@ -11,7 +11,7 @@ Chrome extension designed specifically for Discord enthusiasts who belong to mul
 Notice the green shadow around the valorant server logo
 
 ## Who Is It For
-This extension is ideal for active Discord users who are members of numerous servers and need a streamlined way to navigate between them. Whether you're a community manager, gamer, or part of multiple interest groups, Discord Server Search enhances your Discord experience by saving time and reducing the hassle of manual browsing.
+This extension is ideal for active Discord users who are members of numerous servers and need a streamlined way to navigate between them. Whether you're a community manager, gamer, or part of multiple interest groups, Discord Navigator enhances your Discord experience by saving time and reducing the hassle of manual browsing.
 
 ## Installation
 
