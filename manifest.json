@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Discord navigator",
+  "name": "Discord Navigator",
   "version": "1.0",
-  "description": "Search and highlight Discord servers.",
+  "description": "Search and highlight Discord Servers.",
   "permissions": [
     "activeTab",
     "scripting",
