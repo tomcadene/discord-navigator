@@ -8,7 +8,15 @@
 <body>
   <div class="container">
     <h2>Search Discord Servers</h2>
-    <input type="text" id="searchInput" placeholder="Enter server name...">
+    <input type="text" id="searchInput" placeholder="Enter chat name...">
+    
+    <div class="color-picker-container">
+      <label for="colorInput">Highlight Color:</label>
+      <input type="color" id="colorInput" value="#00ff00">
+    </div>
+    
+    <div id="resultCount" class="result-count">0 servers found</div>
+    
     <button id="searchButton">Search</button>
     <button id="clearButton">Clear</button>
   </div>
