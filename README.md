@@ -5,7 +5,7 @@ Chrome extension designed specifically for Discord enthusiasts who belong to mul
 **Efficient Server Search:** Quickly find any server you've already joined by typing its name into the search bar.  
 **Visual Highlights:** Matching servers are highlighted with a green border, making them stand out for easy identification.  
 **Multiple Matches:** Supports highlighting multiple servers that contain the search term, even if the term is part of a longer server name.  
-**User-Friendly Interface:** Simple popup with a search and clear button for seamless interaction.
+**User-Friendly Interface:** Simple popup with a search and clear button for seamless interaction.  
 **Open-Source**: The code is right here in the repository. Contribute by opening an issue or submit a pull request.
 
 ![discord_navigator_2](https://github.com/user-attachments/assets/841d2dfd-6ef7-47f2-935f-8287acc0e6bf)
