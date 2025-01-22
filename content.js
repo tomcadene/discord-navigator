@@ -13,7 +13,7 @@ function clearHighlights() {
 }
 
 // Function to perform the search, highlight matches, and scroll to the first match
-function performSearch(query, color) {
+function performSearch(query, color, autoScroll) {
   clearHighlights(); // Clear previous highlights
 
   const serversDiv = document.querySelector('div[aria-label="Servers"]');
@@ -44,8 +44,8 @@ function performSearch(query, color) {
     }
   });
 
-  // Scroll to the first matching server if any
-  if (firstMatch) {
+  // Scroll to the first matching server if autoScroll is enabled and there is at least one match
+  if (autoScroll && firstMatch) {
     // Scroll the parent container to bring the first match into view
     firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
@@ -56,7 +56,8 @@ function performSearch(query, color) {
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SEARCH') {
-    const result = performSearch(message.query, message.color);
+    const { query, color, autoScroll } = message;
+    const result = performSearch(query, color, autoScroll);
     // Send back the count
     sendResponse(result);
   } else if (message.type === 'CLEAR') {
