@@ -8,7 +8,7 @@ Chrome extension designed specifically for Discord enthusiasts who belong to mul
 + **User-Friendly Interface:** Simple popup with a search and clear button for seamless interaction.  
 + **Open-Source**: Contribute by opening an issue or submit a pull request.
 
-![discord_navigator_2](https://github.com/user-attachments/assets/841d2dfd-6ef7-47f2-935f-8287acc0e6bf)
+![dn_2](https://github.com/user-attachments/assets/7e6bdd66-4b80-4f0b-910a-f9d1b115e8b6)
 Notice the green shadow around the valorant server logo
 
 ## Who Is It For
