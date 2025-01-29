@@ -6,6 +6,8 @@ Chrome extension designed specifically for Discord enthusiasts who belong to mul
 + **Visual Highlights:** Matching servers are highlighted with a green border, making them stand out for easy identification.  
 + **Multiple Matches:** Supports highlighting multiple servers that contain the search term, even if the term is part of a longer server name.  
 + **User-Friendly Interface:** Simple popup with a search and clear button for seamless interaction.  
++ **Normal Search:** Highlights servers containing the exact substring entered.
++ **Advanced Search:** Highlights servers containing all individual letters from the search query.
 + **Open-Source**: Contribute by opening an issue or submit a pull request.
 
 ![dn_2](https://github.com/user-attachments/assets/7e6bdd66-4b80-4f0b-910a-f9d1b115e8b6)
