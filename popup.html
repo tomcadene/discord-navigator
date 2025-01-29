@@ -8,24 +8,35 @@
 <body>
   <div class="container">
     <h2>Search Discord Servers</h2>
-    <input type="text" id="searchInput" placeholder="Enter server name...">
+    <input type="text" id="searchInput" placeholder="Enter chat name..." aria-label="Search Input">
     
     <div class="color-picker-container">
       <label for="colorInput">Highlight Color:</label>
-      <input type="color" id="colorInput" value="#00ff00">
+      <input type="color" id="colorInput" value="#00ff00" aria-label="Highlight Color Picker">
     </div>
     
     <div class="auto-scroll-container">
-      <input type="checkbox" id="autoScroll" checked>
+      <input type="checkbox" id="autoScroll" checked aria-label="Enable Auto-Scroll">
       <label for="autoScroll">Enable Auto-Scroll</label>
+    </div>
+    
+    <div class="advanced-search-container">
+      <input type="checkbox" id="advancedSearch" aria-label="Enable Advanced Search">
+      <label for="advancedSearch">Advanced Search</label>
     </div>
     
     <div id="resultCount" class="result-count">0 servers found</div>
     
     <button id="searchButton">Search</button>
     <button id="clearButton">Clear</button>
+    <button id="nextButton" disabled>Next</button> <!-- Next Button -->
+    
+    <!-- Terminal Section -->
+    <div id="terminal" class="terminal">
+      <h3>Terminal</h3>
+      <div id="logContainer" class="log-container" aria-label="Log Container"></div>
+    </div>
   </div>
-  <div>Visit the <a href="https://github.com/tomcadene/discord-navigator" target="_blank">github repository</a></div>
 
   <script src="popup.js"></script>
 </body>
