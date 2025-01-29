@@ -1,4 +1,11 @@
-// Function to remove existing highlights
+// Array to store all matched elements
+let matchedElements = [];
+// Current index in the matchedElements array
+let currentIndex = 0;
+
+/**
+ * Removes existing highlights from the Discord server list
+ */
 function clearHighlights() {
   const highlighted = document.querySelectorAll('.discord-search-highlight');
   highlighted.forEach(elem => {
@@ -10,10 +17,20 @@ function clearHighlights() {
     // Remove the highlight class
     elem.classList.remove('discord-search-highlight');
   });
+  // Clear the matchedElements array and reset currentIndex
+  matchedElements = [];
+  currentIndex = 0;
 }
 
-// Function to perform the search, highlight matches, and scroll to the first match
-function performSearch(query, color, autoScroll) {
+/**
+ * Performs the search, highlights matches, and scrolls to the first match if autoScroll is enabled
+ * @param {string} query - The search query
+ * @param {string} color - The highlight color
+ * @param {boolean} autoScroll - Whether to auto-scroll to the first match
+ * @param {boolean} advancedSearch - Whether advanced search is enabled
+ * @returns {object} - Contains the count of matched servers
+ */
+function performSearch(query, color, autoScroll, advancedSearch) {
   clearHighlights(); // Clear previous highlights
 
   const serversDiv = document.querySelector('div[aria-label="Servers"]');
@@ -21,49 +38,79 @@ function performSearch(query, color, autoScroll) {
 
   const groupChats = serversDiv.querySelectorAll('div.listItem__650eb');
   let matchCount = 0;
-  let firstMatch = null;
 
   groupChats.forEach(chat => {
     const innerDiv = chat.querySelector('div > div[data-dnd-name]');
     if (innerDiv) {
       const chatName = innerDiv.getAttribute('data-dnd-name').toLowerCase();
       const searchTerm = query.toLowerCase();
-      if (chatName.includes(searchTerm)) {
+
+      let isMatch = false;
+
+      if (advancedSearch) {
+        // Advanced Search: Check if all letters in searchTerm are present in chatName
+        const searchLetters = searchTerm.split('');
+        isMatch = searchLetters.every(letter => chatName.includes(letter));
+      } else {
+        // Normal Search: Check if chatName includes the searchTerm as a substring
+        isMatch = chatName.includes(searchTerm);
+      }
+
+      if (isMatch) {
         // Apply highlight
         innerDiv.style.boxShadow = `0 0 0 2px ${color}`;
         innerDiv.style.borderRadius = '0.25rem';
         innerDiv.classList.add('discord-search-highlight');
 
         matchCount += 1;
-
-        // Track the first matching server
-        if (!firstMatch) {
-          firstMatch = innerDiv;
-        }
+        matchedElements.push(innerDiv); // Add to matchedElements array
       }
     }
   });
 
-  // Scroll to the first matching server if autoScroll is enabled and there is at least one match
-  if (autoScroll && firstMatch) {
-    // Scroll the parent container to bring the first match into view
-    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // If autoScroll is enabled, scroll to the first match
+  if (autoScroll && matchedElements.length > 0) {
+    currentIndex = 0; // Reset to first match
+    matchedElements[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   return { count: matchCount };
 }
 
-// Listen for messages from the popup
+/**
+ * Scrolls to the next matched server
+ */
+function scrollToNext() {
+  if (matchedElements.length === 0) return;
+
+  // Increment the index
+  currentIndex = (currentIndex + 1) % matchedElements.length; // Wrap around
+
+  // Scroll to the next matched element
+  matchedElements[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/**
+ * Listens for messages from the popup script
+ */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SEARCH') {
-    const { query, color, autoScroll } = message;
-    const result = performSearch(query, color, autoScroll);
+    const { query, color, autoScroll, advancedSearch } = message;
+    const result = performSearch(query, color, autoScroll, advancedSearch);
     // Send back the count
     sendResponse(result);
   } else if (message.type === 'CLEAR') {
     clearHighlights();
-    // Optionally, send back confirmation
+    // Send back confirmation
     sendResponse({ cleared: true });
+  } else if (message.type === 'NEXT') {
+    scrollToNext();
+    // Send back confirmation
+    sendResponse({ scrolled: true });
+  } else {
+    // Handle unknown message types
+    console.warn('Unknown message type:', message.type);
+    sendResponse({ error: 'Unknown message type' });
   }
 
   // Indicate that we will respond asynchronously if needed
