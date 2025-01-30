@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add the new log to the queue
     logQueue.push({ element: logEntry, type });
 
-    // Ensure the queue doesn't exceed 5 logs
-    if (logQueue.length > 5) {
+    // Ensure the queue doesn't exceed 4 logs
+    if (logQueue.length > 4) {
       const removedLog = logQueue.shift();
       logsContainer.removeChild(removedLog.element);
     }
