@@ -4,7 +4,7 @@ let matchedElements = [];
 let currentIndex = 0;
 
 /**
- * Removes existing highlights from the Discord server list
+ * Clears all existing highlights by removing styles and classes.
  */
 function clearHighlights() {
   const highlighted = document.querySelectorAll('.discord-search-highlight');
@@ -13,6 +13,9 @@ function clearHighlights() {
     elem.style.boxShadow = '';
     elem.style.border = '';
     elem.style.borderRadius = '';
+    
+    // Remove the green background color
+    elem.style.backgroundColor = '';
     
     // Remove the highlight class
     elem.classList.remove('discord-search-highlight');
@@ -23,12 +26,12 @@ function clearHighlights() {
 }
 
 /**
- * Performs the search, highlights matches, and scrolls to the first match if autoScroll is enabled
- * @param {string} query - The search query
- * @param {string} color - The highlight color
- * @param {boolean} autoScroll - Whether to auto-scroll to the first match
- * @param {boolean} advancedSearch - Whether advanced search is enabled
- * @returns {object} - Contains the count of matched servers
+ * Performs the search based on user input and highlights matched servers.
+ * @param {string} query - The search term entered by the user.
+ * @param {string} color - The color selected by the user for highlighting.
+ * @param {boolean} autoScroll - Whether to auto-scroll to the first match.
+ * @param {boolean} advancedSearch - Whether advanced search is enabled.
+ * @returns {object} - An object containing the count of matches found.
  */
 function performSearch(query, color, autoScroll, advancedSearch) {
   clearHighlights(); // Clear previous highlights
@@ -36,7 +39,7 @@ function performSearch(query, color, autoScroll, advancedSearch) {
   const serversDiv = document.querySelector('div[aria-label="Servers"]');
   if (!serversDiv) return { count: 0 };
 
-  const groupChats = serversDiv.querySelectorAll('div.listItem__650eb');
+  const groupChats = serversDiv.querySelectorAll('div.listItem_c96c45');
   let matchCount = 0;
 
   groupChats.forEach(chat => {
@@ -57,9 +60,12 @@ function performSearch(query, color, autoScroll, advancedSearch) {
       }
 
       if (isMatch) {
-        // Apply highlight
+        // Apply highlight: box-shadow and green background
         innerDiv.style.boxShadow = `0 0 0 2px ${color}`;
         innerDiv.style.borderRadius = '0.25rem';
+        innerDiv.style.backgroundColor = 'rgba(0, 255, 0, 0.2)'; // Semi-transparent green
+
+        // Add the highlight class
         innerDiv.classList.add('discord-search-highlight');
 
         matchCount += 1;
@@ -78,7 +84,7 @@ function performSearch(query, color, autoScroll, advancedSearch) {
 }
 
 /**
- * Scrolls to the next matched server
+ * Scrolls to the next matched server in the list.
  */
 function scrollToNext() {
   if (matchedElements.length === 0) return;
@@ -91,7 +97,7 @@ function scrollToNext() {
 }
 
 /**
- * Listens for messages from the popup script
+ * Listens for messages from the popup and handles them accordingly.
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SEARCH') {
@@ -107,10 +113,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     scrollToNext();
     // Send back confirmation
     sendResponse({ scrolled: true });
-  } else {
-    // Handle unknown message types
-    console.warn('Unknown message type:', message.type);
-    sendResponse({ error: 'Unknown message type' });
   }
 
   // Indicate that we will respond asynchronously if needed
