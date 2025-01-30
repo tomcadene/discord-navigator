@@ -62,8 +62,8 @@ function performSearch(query, color, autoScroll, advancedSearch) {
       if (isMatch) {
         // Apply highlight: box-shadow and green background
         innerDiv.style.boxShadow = `0 0 0 2px ${color}`;
-        innerDiv.style.borderRadius = '0.25rem';
-        innerDiv.style.backgroundColor = 'rgba(0, 255, 0, 0.2)'; // Semi-transparent green
+        innerDiv.style.borderRadius = '0.5rem';
+        innerDiv.style.backgroundColor = 'rgba(158, 240, 26, 0.2)'; // Semi-transparent green
 
         // Add the highlight class
         innerDiv.classList.add('discord-search-highlight');
