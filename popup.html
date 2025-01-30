@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Discord Navigator</title>
+  <title>Discord Group Chat Search</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="container">
-    <h2>Search Discord Servers</h2>
-    <input type="text" id="searchInput" placeholder="Enter chat name..." aria-label="Search Input">
+    <h2>Search Discord Chats</h2>
+    <input type="text" id="searchInput" placeholder="Enter chat name...">
     
     <div class="color-picker-container">
       <label for="colorInput">Highlight Color:</label>
-      <input type="color" id="colorInput" value="#00ff00" aria-label="Highlight Color Picker">
+      <input type="color" id="colorInput" value="#00ff00">
     </div>
     
     <div class="auto-scroll-container">
-      <input type="checkbox" id="autoScroll" checked aria-label="Enable Auto-Scroll">
+      <input type="checkbox" id="autoScroll" checked>
       <label for="autoScroll">Enable Auto-Scroll</label>
     </div>
     
     <div class="advanced-search-container">
-      <input type="checkbox" id="advancedSearch" aria-label="Enable Advanced Search">
+      <input type="checkbox" id="advancedSearch">
       <label for="advancedSearch">Advanced Search</label>
     </div>
     
@@ -31,10 +31,10 @@
     <button id="clearButton">Clear</button>
     <button id="nextButton" disabled>Next</button> <!-- Next Button -->
     
-    <!-- Terminal Section -->
-    <div id="terminal" class="terminal">
-      <h3>Terminal</h3>
-      <div id="logContainer" class="log-container" aria-label="Log Container"></div>
+    <!-- Log Viewer -->
+    <div id="logViewer" class="log-viewer">
+      <h3>Log Viewer</h3>
+      <div id="logs" class="logs"></div>
     </div>
   </div>
 
