@@ -1,7 +1,7 @@
 body {
-  width: 20rem;
+  width: 300px;
   font-family: Arial, sans-serif;
-  padding: 1rem;
+  padding: 10px;
   box-sizing: border-box;
 }
 
@@ -23,7 +23,6 @@ input[type="color"] {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.05);
 }
 
 input[type="color"] {
@@ -90,75 +89,43 @@ button:last-child {
   margin-bottom: 0;
 }
 
-/* Terminal Styling */
-.terminal {
+/* Log Viewer Styles */
+.log-viewer {
   margin-top: 20px;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-family: monospace;
+  border-top: 1px solid #ddd;
 }
 
-.terminal h3 {
-  margin-top: 0;
+.log-viewer h3 {
+  margin: 0 0 10px 0;
   font-size: 16px;
   text-align: center;
-  color: #333;
 }
 
-.log-container {
-  max-height: 150px; /* Adjust as needed */
+.logs {
+  max-height: 150px;
   overflow-y: auto;
-  font-size: 12px;
-  color: #555;
+  background-color: #f9f9f9;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-/* Log Entry Styling */
 .log-entry {
-  display: flex;
-  align-items: center;
+  font-size: 12px;
   margin-bottom: 5px;
-  padding: 2px 4px;
-  border-radius: 3px;
 }
 
-.log-entry .timestamp {
-  margin-right: 8px;
+.log-entry:last-child {
+  margin-bottom: 0;
+}
+
+.log-entry.gray {
   color: #888;
-  white-space: nowrap;
-  flex-shrink: 0;
+  opacity: 0.5; /* Older logs have half opacity */
 }
 
-.log-entry .message {
-  flex-grow: 1;
-}
-
-/* Color Coding Based on Log Type */
-.log-entry.info .message {
-  color: #006064;
-}
-
-.log-entry.error .message {
-  color: #c62828;
-}
-
-.log-entry.feature .message {
-  color: #33691e;
-}
-
-/* Optional: Different background for each log type */
-.log-entry.info {
-  background-color: #e0f7fa;
-}
-
-.log-entry.error {
-  background-color: #ffebee;
-}
-
-.log-entry.feature {
-  background-color: #f1f8e9;
+.log-entry.color {
+  color: #000;
+  opacity: 1; /* Most recent log has full opacity */
 }
