@@ -39,7 +39,7 @@ function performSearch(query, color, autoScroll, advancedSearch) {
   const serversDiv = document.querySelector('div[aria-label="Servers"]');
   if (!serversDiv) return { count: 0 };
 
-  const groupChats = serversDiv.querySelectorAll('div.listItem_c96c45');
+  const groupChats = serversDiv.querySelectorAll('div.listItem__650eb');
   let matchCount = 0;
 
   groupChats.forEach(chat => {
