@@ -10,7 +10,7 @@ Chrome extension designed specifically for Discord enthusiasts who belong to mul
 + **Advanced Search:** Highlights servers containing all individual letters from the search query.
 + **Open-Source**: Contribute by opening an issue or submit a pull request.
 
-![dn_2](https://github.com/user-attachments/assets/7e6bdd66-4b80-4f0b-910a-f9d1b115e8b6)
+![discord_navigator_2](https://github.com/user-attachments/assets/d7001b94-28fe-4f3c-83bf-1734dd7140a3)
 Notice the green shadow around the valorant server logo
 
 ## Who Is It For
