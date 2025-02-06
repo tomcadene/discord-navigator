@@ -1,20 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Element Declarations
+  const statusIndicator = document.getElementById('statusIndicator');
+  const pageStatus = document.getElementById('pageStatus');
+  const reloadPageButton = document.getElementById('reloadPageButton');
+
   const searchButton = document.getElementById('searchButton');
   const clearButton = document.getElementById('clearButton');
-  const nextButton = document.getElementById('nextButton'); // Next Button
+  const nextButton = document.getElementById('nextButton');
   const searchInput = document.getElementById('searchInput');
   const colorInput = document.getElementById('colorInput');
   const autoScrollCheckbox = document.getElementById('autoScroll');
-  const advancedSearchCheckbox = document.getElementById('advancedSearch'); // Advanced Search Checkbox
+  const advancedSearchCheckbox = document.getElementById('advancedSearch');
   const resultCount = document.getElementById('resultCount');
-  const logsContainer = document.getElementById('logs'); // Log Entries Container
+  const logsContainer = document.getElementById('logs');
 
   // In-memory log queue (holds up to 5 logs)
   let logQueue = [];
 
   /**
-   * Formats the current timestamp in 24-hour format.
-   * Example Output: "14:35:27"
+   * Returns the current timestamp in 24-hour format.
    */
   const getCurrentTimestamp = () => {
     const now = new Date();
@@ -25,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /**
-   * Adds a new log entry to the log viewer.
+   * Adds a log entry to the log viewer.
    * @param {string} message - The log message.
    * @param {string} type - The type of log ('info', 'error', 'feature').
    */
@@ -34,30 +38,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const logEntry = document.createElement('div');
     logEntry.classList.add('log-entry');
 
-    // Determine the style based on the log type and queue position
+    // Style based on log type
     if (type === 'error') {
       logEntry.style.color = 'red';
     } else if (type === 'feature') {
       logEntry.style.color = 'blue';
     } else {
-      logEntry.style.color = '#000'; // Default color
+      logEntry.style.color = '#000';
     }
-
     logEntry.textContent = `[${timestamp}] ${message}`;
 
-    // Add the new log to the queue
+    // Add new log to the queue.
     logQueue.push({ element: logEntry, type });
-
-    // Ensure the queue doesn't exceed 4 logs
     if (logQueue.length > 4) {
       const removedLog = logQueue.shift();
       logsContainer.removeChild(removedLog.element);
     }
-
-    // Append the new log to the container
-    logsContainer.appendChild(logEntry);
-
-    // Update log styles: older logs gray, newest log in full color
+    // Update opacity: older logs half opacity, newest full opacity.
     logQueue.forEach((log, index) => {
       if (index < logQueue.length - 1) {
         log.element.classList.add('gray');
@@ -67,89 +64,154 @@ document.addEventListener('DOMContentLoaded', () => {
         log.element.classList.remove('gray');
       }
     });
-
-    // Automatically scroll to the bottom to show the latest log
+    logsContainer.appendChild(logEntry);
     logsContainer.scrollTop = logsContainer.scrollHeight;
   };
 
   /**
-   * Function to send search query, color, auto-scroll preference, and advanced search preference to content script
+   * Updates the status indicator and message based on page readiness.
+   * @param {boolean} isReady - True if page is ready.
    */
+  const updateStatusIndicator = (isReady) => {
+    if (isReady) {
+      statusIndicator.style.backgroundColor = 'green';
+      statusIndicator.style.animation = 'pulseGreen 2s infinite';
+      statusIndicator.title = 'Page is fully loaded';
+      pageStatus.textContent = 'Page loaded: Discord servers found.';
+    } else {
+      statusIndicator.style.backgroundColor = 'orange';
+      statusIndicator.style.animation = 'pulse 2s infinite';
+      statusIndicator.title = 'Loading...';
+      pageStatus.textContent = 'Waiting for Discord servers...';
+    }
+  };
+
+  /**
+   * Checks if the active tab is on discord.com.
+   */
+  const checkIfOnDiscord = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) return;
+      const url = tabs[0].url;
+      if (!url.includes('discord.com')) {
+        pageStatus.textContent = 'Error: You are not on discord.com!';
+        addLog('User is not on discord.com.', 'error');
+        reloadPageButton.style.display = 'block';
+        clearInterval(readyInterval);
+      } else {
+        reloadPageButton.style.display = 'none';
+        addLog('User is on discord.com.', 'info');
+      }
+    });
+  };
+
+  /**
+   * Checks if the Discord servers are loaded.
+   */
+  const checkPageReady = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) return;
+      chrome.tabs.sendMessage(tabs[0].id, { type: 'CHECK_READY' }, (response) => {
+        if (chrome.runtime.lastError) {
+          updateStatusIndicator(false);
+          addLog('Error: Unable to check page readiness.', 'error');
+          reloadPageButton.style.display = 'block';
+          return;
+        }
+        if (response && response.ready) {
+          updateStatusIndicator(true);
+          addLog('Page fully loaded and ready.', 'info');
+          reloadPageButton.style.display = 'none';  // Hide reload button when ready
+          clearInterval(readyInterval); // Stop polling once ready.
+        } else {
+          updateStatusIndicator(false);
+        }
+      });
+    });
+  };
+
+  // Start polling every 2 seconds.
+  const readyInterval = setInterval(checkPageReady, 2000);
+
+  // Check if the user is on discord.com.
+  checkIfOnDiscord();
+
+  // Reload Page Button Click Handler.
+  reloadPageButton.addEventListener('click', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) return;
+      chrome.tabs.reload(tabs[0].id, () => {
+        addLog('Reloading the page.', 'feature');
+        reloadPageButton.style.display = 'none';
+        pageStatus.textContent = 'Reloading...';
+      });
+    });
+  });
+
+  // Function to send search query to content script.
   const sendSearchQuery = (query, color, autoScroll, advancedSearch) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length === 0) {
         addLog('No active tab found.', 'error');
         return;
       }
-
       chrome.tabs.sendMessage(
         tabs[0].id,
-        { type: 'SEARCH', query: query, color: color, autoScroll: autoScroll, advancedSearch: advancedSearch },
+        { type: 'SEARCH', query, color, autoScroll, advancedSearch },
         (response) => {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError);
-            addLog('Error: Unable to communicate with content script.', 'error');
+            addLog('Error: Unable to retrieve search results.', 'error');
             resultCount.textContent = 'Error: Unable to retrieve results.';
-            nextButton.disabled = true; // Disable Next button on error
+            nextButton.disabled = true;
             return;
           }
-
           if (response && typeof response.count === 'number') {
             resultCount.textContent = `${response.count} server(s) found`;
             addLog(`Search completed. ${response.count} server(s) found.`, 'info');
-
             if (response.count > 1) {
-              nextButton.disabled = false; // Enable Next button
+              nextButton.disabled = false;
               addLog('Multiple matches found. "Next" button enabled.', 'feature');
             } else {
-              nextButton.disabled = true; // Disable Next button
+              nextButton.disabled = true;
               addLog('Single or no match found. "Next" button disabled.', 'feature');
             }
           } else {
             resultCount.textContent = '0 servers found';
             addLog('Search completed. No servers found.', 'info');
-            nextButton.disabled = true; // Disable Next button
+            nextButton.disabled = true;
           }
         }
       );
     });
   };
 
-  /**
-   * Function to send clear command to content script
-   */
+  // Function to send clear command to content script.
   const sendClearCommand = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length === 0) {
         addLog('No active tab found.', 'error');
         return;
       }
-
       chrome.tabs.sendMessage(tabs[0].id, { type: 'CLEAR' }, () => {
-        // Reset the result count display
         resultCount.textContent = '0 servers found';
         addLog('Highlights cleared.', 'info');
-        nextButton.disabled = true; // Disable Next button
+        nextButton.disabled = true;
       });
     });
   };
 
-  /**
-   * Function to handle search action
-   */
+  // Handle Search Action.
   const handleSearch = () => {
     const query = searchInput.value.trim();
     const color = colorInput.value;
     const autoScroll = autoScrollCheckbox.checked;
     const advancedSearch = advancedSearchCheckbox.checked;
-
     if (query === '') {
       alert('Please enter a search term.');
       addLog('Search attempted with empty query.', 'error');
       return;
     }
-
-    // Save the selected color, auto-scroll preference, advanced search preference, and last query
     chrome.storage.sync.set(
       { highlightColor: color, autoScrollEnabled: autoScroll, advancedSearchEnabled: advancedSearch, lastQuery: query },
       () => {
@@ -159,32 +221,24 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  /**
-   * Function to handle clearing the search
-   */
+  // Handle Clear Action.
   const handleClear = () => {
     searchInput.value = '';
     sendClearCommand();
-    // Remove the last query from storage
     chrome.storage.sync.remove(['lastQuery'], () => {
       addLog('Search query cleared from storage.', 'info');
     });
   };
 
-  /**
-   * Function to handle color change
-   */
+  // Handle Color Change.
   const handleColorChange = () => {
     const color = colorInput.value;
     const autoScroll = autoScrollCheckbox.checked;
     const advancedSearch = advancedSearchCheckbox.checked;
-    // Save the selected color and preferences
     chrome.storage.sync.set({ highlightColor: color, autoScrollEnabled: autoScroll, advancedSearchEnabled: advancedSearch }, () => {
       addLog('Highlight color changed.', 'feature');
-      // Optionally, trigger a new search with the updated color
       const query = searchInput.value.trim();
       if (query !== '') {
-        // Also save the last query
         chrome.storage.sync.set({ lastQuery: query }, () => {
           sendSearchQuery(query, color, autoScroll, advancedSearch);
         });
@@ -192,39 +246,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  /**
-   * Function to handle auto-scroll checkbox change
-   */
+  // Handle Auto-Scroll checkbox change.
   const handleAutoScrollChange = () => {
     const autoScroll = autoScrollCheckbox.checked;
     const advancedSearch = advancedSearchCheckbox.checked;
-    // Save the auto-scroll and advanced search preferences without triggering a search or highlight
     chrome.storage.sync.set({ autoScrollEnabled: autoScroll, advancedSearchEnabled: advancedSearch }, () => {
       addLog(`Auto-Scroll ${autoScroll ? 'enabled' : 'disabled'}.`, 'feature');
     });
   };
 
-  /**
-   * Function to handle advanced search checkbox change
-   */
+  // Handle Advanced Search checkbox change.
   const handleAdvancedSearchChange = () => {
     const advancedSearch = advancedSearchCheckbox.checked;
-    // Save the advanced search preference without triggering a search or highlight
     chrome.storage.sync.set({ advancedSearchEnabled: advancedSearch }, () => {
       addLog(`Advanced Search ${advancedSearch ? 'enabled' : 'disabled'}.`, 'feature');
     });
   };
 
-  /**
-   * Function to handle the Next button click
-   */
+  // Handle Enter key press in search input.
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSearch();
+    }
+  });
+
+  // Handle Next button click.
   const handleNext = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length === 0) {
         addLog('No active tab found.', 'error');
         return;
       }
-
       chrome.tabs.sendMessage(tabs[0].id, { type: 'NEXT' }, (response) => {
         if (chrome.runtime.lastError) {
           console.error(chrome.runtime.lastError);
@@ -236,44 +289,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  /**
-   * Adds a log entry with a timestamp.
-   * @param {string} message - The message to log.
-   * @param {string} type - The type of log ('info', 'error', 'feature').
-   */
-  // Function is defined above as addLog
-
-  /**
-   * Event Listeners
-   */
-  // Search button click
+  // Attach event listeners.
   searchButton.addEventListener('click', handleSearch);
-
-  // Clear button click
   clearButton.addEventListener('click', handleClear);
-
-  // Color picker change
   colorInput.addEventListener('change', handleColorChange);
-
-  // Auto-Scroll checkbox change
   autoScrollCheckbox.addEventListener('change', handleAutoScrollChange);
-
-  // Advanced Search checkbox change
   advancedSearchCheckbox.addEventListener('change', handleAdvancedSearchChange);
-
-  // Enter key press in search input
-  searchInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent default form submission
-      handleSearch();
-    }
-  });
-
-  // Next button click
   nextButton.addEventListener('click', handleNext);
 
-  /**
-   * Initialize the log viewer with a welcome message
-   */
+  // Log extension load.
   addLog('Extension loaded. Ready to search.', 'info');
 });
