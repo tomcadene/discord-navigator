@@ -8,6 +8,13 @@
 <body>
   <div class="container">
     <h2>Search Discord Servers</h2>
+    <!-- Status Indicator Dot -->
+    <div id="statusIndicator" class="status-indicator" title="Loading..."></div>
+    <!-- Status Message -->
+    <div id="pageStatus" class="page-status">Checking page status...</div>
+    <!-- Reload Page Button (hidden by default) -->
+    <button id="reloadPageButton" class="reload-button" style="display:none;">Reload Page</button>
+    
     <input type="text" id="searchInput" placeholder="Enter server name...">
     
     <div class="color-picker-container">
@@ -25,11 +32,11 @@
       <label for="advancedSearch">Advanced Search</label>
     </div>
     
-    <div id="resultCount" class="result-count">0 servers found</div>
+    <div id="resultCount" class="result-count">0 server(s) found</div>
     
     <button id="searchButton">Search</button>
     <button id="clearButton">Clear</button>
-    <button id="nextButton" disabled>Next</button> <!-- Next Button -->
+    <button id="nextButton" disabled>Next</button>
     
     <!-- Log Viewer -->
     <div id="logViewer" class="log-viewer">
