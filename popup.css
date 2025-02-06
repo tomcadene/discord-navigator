@@ -97,6 +97,7 @@ input[type="color"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
 
 input[type="color"] {
