@@ -9,11 +9,19 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  gap: 0.75rem
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 10px;
+}
+
+.status {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.75rem;
 }
 
 /* Status Indicator Dot */
@@ -23,7 +31,6 @@ h2 {
   border-radius: 50%;
   background-color: orange; /* Default orange while loading */
   animation: pulse 2s infinite;
-  margin: 0 auto 5px auto;
 }
 
 /* Pulsating Animation for Orange */
@@ -62,14 +69,12 @@ h2 {
 .page-status {
   text-align: center;
   font-size: 13px;
-  margin-bottom: 10px;
   color: #333;
 }
 
 /* Reload Page Button */
 .reload-button {
   display: block;
-  margin: 0 auto 10px auto;
   padding: 5px 10px;
   font-size: 12px;
   background-color: #e74c3c; /* Red */
@@ -86,7 +91,6 @@ input[type="text"],
 input[type="color"] {
   padding: 8px;
   font-size: 14px;
-  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.05);
@@ -101,7 +105,6 @@ input[type="color"] {
 .color-picker-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .color-picker-container label {
@@ -117,7 +120,6 @@ input[type="color"] {
 .advanced-search-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .auto-scroll-container input[type="checkbox"],
@@ -130,7 +132,6 @@ input[type="color"] {
 
 .result-count {
   font-size: 14px;
-  margin-bottom: 10px;
   color: #333;
   text-align: center;
 }
@@ -138,7 +139,6 @@ input[type="color"] {
 button {
   padding: 8px;
   font-size: 14px;
-  margin-bottom: 5px;
   cursor: pointer;
   border: none;
   border-radius: 4px;
@@ -162,13 +162,10 @@ button:last-child {
 
 /* Log Viewer Styles */
 .log-viewer {
-  margin-top: 20px;
-  padding-top: 10px;
   border-top: 1px solid #ddd;
 }
 
 .log-viewer h3 {
-  margin: 0 0 10px 0;
   font-size: 16px;
   text-align: center;
 }
@@ -184,7 +181,6 @@ button:last-child {
 
 .log-entry {
   font-size: 12px;
-  margin-bottom: 5px;
 }
 
 .log-entry:last-child {
