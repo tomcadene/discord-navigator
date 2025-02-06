@@ -16,6 +16,72 @@ h2 {
   margin-bottom: 10px;
 }
 
+/* Status Indicator Dot */
+.status-indicator {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: orange; /* Default orange while loading */
+  animation: pulse 2s infinite;
+  margin: 0 auto 5px auto;
+}
+
+/* Pulsating Animation for Orange */
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 165, 0, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
+  }
+}
+
+/* Pulsating Animation for Green */
+@keyframes pulseGreen {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 128, 0, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 128, 0, 0);
+  }
+}
+
+/* Status Message */
+.page-status {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Reload Page Button */
+.reload-button {
+  display: block;
+  margin: 0 auto 10px auto;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #e74c3c; /* Red */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.reload-button:hover {
+  background-color: #c0392b;
+}
+
 input[type="text"],
 input[type="color"] {
   padding: 8px;
@@ -27,8 +93,8 @@ input[type="color"] {
 }
 
 input[type="color"] {
-  height: 40px; /* Increased height for better visibility */
-  width: 100%; /* Make it span the container width */
+  height: 40px;
+  width: 100%;
   cursor: pointer;
 }
 
@@ -86,7 +152,7 @@ button:hover:not(:disabled) {
 }
 
 button:disabled {
-  background-color: #ccc; /* Gray color when disabled */
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
@@ -96,7 +162,6 @@ button:last-child {
 
 /* Log Viewer Styles */
 .log-viewer {
-  width: 100%;
   margin-top: 20px;
   padding-top: 10px;
   border-top: 1px solid #ddd;
@@ -128,10 +193,10 @@ button:last-child {
 
 .log-entry.gray {
   color: #888;
-  opacity: 0.5; /* Older logs have half opacity */
+  opacity: 0.5;
 }
 
 .log-entry.color {
   color: #000;
-  opacity: 1; /* Most recent log has full opacity */
+  opacity: 1;
 }
