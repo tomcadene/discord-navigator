@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const updateStatusIndicator = (isReady) => {
     if (isReady) {
-      statusIndicator.style.backgroundColor = 'green';
+      statusIndicator.style.backgroundColor = 'rgba(158, 240, 26, 1)';
       statusIndicator.style.animation = 'pulseGreen 2s infinite';
       statusIndicator.title = 'Page is fully loaded';
       pageStatus.textContent = 'Page loaded: Discord servers found.';
