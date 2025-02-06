@@ -12,7 +12,9 @@ body {
   gap: 0.5rem
 }
 
-h2 {
+h2, h3 {
+  padding: 0;
+  amrgin: 0;
   text-align: center;
 }
 
