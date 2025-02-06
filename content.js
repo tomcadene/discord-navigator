@@ -8,7 +8,7 @@ function clearHighlights() {
     elem.style.boxShadow = '';
     elem.style.border = '';
     elem.style.borderRadius = '';
-    elem.style.backgroundColor = ''; // Remove green background
+    elem.style.backgroundColor = ''; // Remove background
     elem.classList.remove('discord-search-highlight');
   });
   matchedElements = [];
