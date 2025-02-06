@@ -126,6 +126,7 @@ input[type="color"] {
 .advanced-search-container {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .auto-scroll-container input[type="checkbox"],
