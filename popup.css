@@ -33,6 +33,7 @@ h2, h3 {
   border-radius: 50%;
   background-color: orange; /* Default orange while loading */
   animation: pulse 2s infinite;
+  margin-left: 0.25rem;
 }
 
 /* Pulsating Animation for Orange */
