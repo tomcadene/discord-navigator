@@ -4,7 +4,7 @@ A small Chrome extension that adds a search bar to your server list on Discord. 
 ## Key Features
 + **Fast server search:** Start typing and every matching server gets outlined in the color you selected.  
 + **Works with long names:** The highlight shows up even if your search term is only part of the full server name.  
-+ **Advanced match mode:** Need something looser? Toggle on letter-by-letter matching.  
++ **Advanced match mode:** Toggle on letter-by-letter matching.  
 + **User-Friendly Interface:** One search box, one clear button, nothing extra.  
 + **Open-Source:** Contribute by opening an issue or submit a pull request.
 
